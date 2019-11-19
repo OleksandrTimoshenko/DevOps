@@ -1,0 +1,40 @@
+---
+# tasks file for wp-setup-mariadb
+
+
+- name: Install mariadb
+
+  yum: name={{ item }} state=present
+
+  with_items:
+
+        - mariadb-server 
+
+        - mariadb
+
+        - MySQL-python
+
+- name: Ensure MariaDB is running (and enable it at boot)
+
+  service: name=mariadb state=started enabled=yes
+
+
+- name: Create MariaDB database
+
+  mysql_db: name={{ wp_mysql_db }} state=present
+
+
+
+- name: Create MariaDB username and password
+
+  mysql_user:
+
+        login_user=root
+
+        name={{ wp_mysql_user }}
+
+        password={{ wp_mysql_password }}
+
+        priv=*.*:ALL
+        
+        host=%

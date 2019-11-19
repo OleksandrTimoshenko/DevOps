@@ -1,0 +1,34 @@
+---
+# tasks file for wp-install-config
+- name: Create directory to download WordPress
+
+  command: mkdir -p /opt/source/wordpress
+
+
+
+- name: Download WordPress
+
+  get_url: url=https://www.wordpress.org/latest.tar.gz dest=/opt/source/wordpress/wordpress.tar.gz validate_certs=no
+
+
+
+- name: Extract WordPress
+
+  command: "tar xzf /opt/source/wordpress/wordpress.tar.gz -C /var/www/html --strip-components 1"
+
+
+
+- name: Send config file
+  copy:
+    src: /home/alex/wp-config-sample.php
+    dest: /var/www/html/wp-config.php
+    mode: '0644'
+    remote_src: yes
+
+
+
+- name: Reboot a slow machine that might have lots of updates to apply
+
+  reboot:
+
+    reboot_timeout: 3600

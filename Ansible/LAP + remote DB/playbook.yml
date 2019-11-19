@@ -1,0 +1,13 @@
+- hosts: LAP_server
+
+  roles:
+
+        - wp-dependencies
+
+        - wp-install-config
+
+- hosts: DB_server
+
+  roles:
+     
+        - wp-setup-mariadb

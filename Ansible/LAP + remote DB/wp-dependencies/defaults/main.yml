@@ -1,0 +1,7 @@
+---
+# defaults file for wp-dependencies
+wp_mysql_db: <your_DB_name>
+
+wp_mysql_user: <your_wpUser>
+
+wp_mysql_password: <your_pass>

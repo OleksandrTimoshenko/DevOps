@@ -1,0 +1,19 @@
+тут
+- всі файли, які було створено ансіблом, налаштовані для встановлення та налаштування ворлпресів та їх підключення до віддаленої БД
+
+
+plabook.yaml використаний для конфігувації 2 ВМ-ок:
+1) LAP + Wordpress
+2) MariaDB
+
+якщо змінювати то:
+0) файл hosts - поставити глобпльні ip-шки машинок, відповідно LAP i BD
+1) в файлі ./wp-install-config/tasks/main.yml в 23 строці замінити alex на свого юзера
+2) на машині з LAP має бути файл, шлях до якого вказаний в тій самій 23 строці,
+файл має мати такий вигляд https://github.com/WordPress/WordPress/blob/master/wp-config-sample.php
+, в даному файлі замінити DB_name, DB_user, DB_password і localhost на свої значення
+для DB_name, DB_user, DB_password ці значення лежать в файлі ./wp-seput-mariadb/defaults/mail.yml
+!!! значення localhost потрібно замінити на !локальну! адресу хоста з MariaDB
+
+
+
