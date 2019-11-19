@@ -1,0 +1,54 @@
+version: '3'
+
+services:
+
+  wordpress1:
+    image: wordpress:5.1.1-php7.3-apache
+    ports:
+      - "8000:80"
+    restart: always
+    env_file:
+      - ./.env
+    environment:
+      WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
+      WORDPRESS_DB_USER: ${MYSQL_USER}
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
+      WORDPRESS_DB_HOST: 40.118.26.239:3306
+    working_dir: /var/www/html
+    volumes:
+      - ./w1:/var/www/html
+      - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+  wordpress2:
+    image: wordpress:5.1.1-php7.3-apache
+    ports:
+      - "8001:80"
+    restart: always
+    env_file:
+      - ./.env
+    environment:
+      WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
+      WORDPRESS_DB_USER: ${MYSQL_USER}
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
+      WORDPRESS_DB_HOST: 40.118.26.239:3306
+    working_dir: /var/www/html
+    volumes:
+      - ./w2:/var/www/html
+      - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+  wordpress3:
+    image: wordpress:5.1.1-php7.3-apache
+    ports:
+      - "8002:80"
+    restart: always
+    env_file:
+      - ./.env
+    environment:
+      WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
+      WORDPRESS_DB_USER: ${MYSQL_USER}
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
+      WORDPRESS_DB_HOST: 40.118.26.239:3306
+    working_dir: /var/www/html
+    volumes:
+      - ./w3:/var/www/html
+      - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+volumes:
+  db_data:

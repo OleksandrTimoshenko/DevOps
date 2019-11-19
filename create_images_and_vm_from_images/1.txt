@@ -1,0 +1,71 @@
+https://docs.microsoft.com/ru-ru/azure/virtual-machines/linux/capture-image
+
+На машині з якої робиш образ
+sudo waagent -deprovision+alex
+
+
+З Azure CLI
+
+az vm deallocate \
+  --resource-group test1 \
+  --name ClearVM
+
+az vm generalize \
+  --resource-group test1 \
+  --name ClearVM
+
+
+az image create \
+  --resource-group test1 \
+  --name myImageLAPhosh --source ClearVM               # робочий image LAP - myImageLAPhosh, це вже можга юзати в тераформі
+
+
+# створення машини в тій самій робочій групі (Машина з LAP-ом)
+az vm create \
+   --resource-group test1 \
+   --name LAP \
+   --image myImageLAPhosh\
+   --admin-username alex \
+   --ssh-key-value ~/.ssh/id_rsa.pub
+
+
+# чиста машинка
+az vm create \
+   --resource-group test1 \
+   --name Docker2 \
+   --image myImage1\
+   --admin-username alex \
+   --ssh-key-value ~/.ssh/id_rsa.pub
+
+
+
+
+az vm deallocate \
+  --resource-group test1 \
+  --name MariaDBTest
+
+az vm generalize \
+  --resource-group test1 \
+  --name MariaDBTest
+
+
+az image create \
+  --resource-group test1 \
+  --name myImageMariaDB --source MariaDBTest
+
+
+# створення машини в тій самій робочій групі
+az vm create \
+   --resource-group test1 \
+   --name LAP \
+   --image myImageLAPhosh\
+   --admin-username alex \
+   --ssh-key-value ~/.ssh/id_rsa.pub
+
+az vm create \
+   --resource-group test1 \
+   --name MariaDBTest \
+   --image myImage1\
+   --admin-username alex \
+   --ssh-key-value ~/.ssh/id_rsa.pub
+
