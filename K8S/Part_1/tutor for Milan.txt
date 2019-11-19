@@ -1,0 +1,9 @@
+az login									          #   зайти на сторінку, ввести код
+az group create --name DockerImagesRG --location westeurope				  #   створити ресурсну групу
+az acr create --resource-group DockerImagesRG --name NewCR13112019 --sku Basic		  #   створити в ресурсній групі CR
+az acr login --name NewCR13112019							  #   зайти в нього
+docker images                                                                             #   подивитися всі змінні
+docker tag wordpress:5.1.1-php7.3-apache  newcr13112019.azurecr.io/wordpress:v1		  #   помітити контейнер wordpress:5.1.1-php7.3-apache   як    newcr13112019.azurecr.io/wordpress:v1
+docker images										  #   перевірити чи є змінні
+docker push newcr13112019.azurecr.io/wordpress:v1					  #   запушити
+az acr repository list --name NewCR13112019 --output table				  #   перевірити чи він є

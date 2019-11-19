@@ -1,0 +1,53 @@
+https://docs.microsoft.com/ru-ru/azure/container-registry/container-registry-quickstart-task-cli
+https://thorsten-hans.com/how-to-use-private-azure-container-registry-with-kubernetes
+
+### тут створювався imeg для wordpressa
+az login									          #   зайти на сторінку, ввести код
+az group create --name DockerImagesRG --location westeurope				  #   створити ресурсну групу
+az acr create --resource-group DockerImagesRG --name NewCR13112019 --sku Basic		  #   створити в ресурсній групі CR
+az acr login --name NewCR13112019							  #   зайти в нього
+docker images                                                                             #   подивитися всі змінні
+docker tag wordpress:5.1.1-php7.3-apache  newcr13112019.azurecr.io/wordpress:v1		  #   помітити контейнер wordpress:5.1.1-php7.3-apache   як    newcr13112019.azurecr.io/wordpress:v1
+docker images										  #   перевірити чи є змінні
+docker push newcr13112019.azurecr.io/wordpress:v1					  #   запушити
+az acr repository list --name NewCR13112019 --output table				  #   перевірити чи він є
+
+
+
+
+# створити AKC
+az aks create --resource-group DockerImagesRG --name NewCR13112019 --node-count 1 --generate-ssh-keys --attach-acr NewCR13112019  --node-vm-size Standard_DS1_v2
+
+
+# встановити на машину cli
+az aks install-cli
+az aks get-credentials --resource-group DockerImagesRG --name NewCR13112019
+
+# контейнер мій --resource-group DockerImagesRG --name NewCR13112019                  (він має бути на Ажурі)
+# створити файл azure-vote-all-in-one-redis.yaml              			      ## зміст шукай в папці ./
+kubectl apply -f azure-vote-all-in-one-redis.yaml
+
+kubectl get service azure-vote-front --watch    X2
+
+
+### маштабування подів
+kubectl get pods
+kubectl scale --replicas=5 deployment/azure-vote-front
+kubectl get pods
+
+az aks show --resource-group DockerImagesRG --name NewCR13112019 --query kubernetesVersion   # не обов'язково
+kubectl autoscale deployment azure-vote-front --cpu-percent=40 --min=3 --max=10
+
+"""
+щоб видалити автоскейлення
+kubectl get hpa
+kubectl delete hpa azure-vote-front
+"""
+
+Managing container
+az aks enable-addons -a monitoring -n NewCR13112019  -g DockerImagesRG
+az account list --all -o table
+az account set -s ...
+az resource list --resource-type Microsoft.OperationalInsights/workspaces -o json
+az aks disable-addons -a monitoring -n NewCR13112019  -g DockerImagesRG
+az aks enable-addons -a monitoring -n NewCR13112019  -g DockerImagesRG --workspace-resource-id "..."
