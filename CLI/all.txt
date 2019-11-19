@@ -1,0 +1,81 @@
+# - comment
+
+
+
+# new res group
+
+az group create --name Ansible_res_group --location westeurope
+
+# open ports
+# 1 create network securyty group
+az network nsg create \
+  --resource-group Ansible_res_group \
+  --location westeurope \
+  --name myBackendNSG 
+
+# 2 create vnet (FrontendSubnet and BackendSubnet)
+az network vnet create \
+  --name myVNet \
+  --resource-group Ansible_res_group \
+  --subnet-name myBackendSubnet
+
+az network vnet create \
+  --name myVNet \
+  --resource-group Ansible_res_group \
+  --subnet-name myFrontendSubnet
+
+# 3 update vnet
+az network vnet subnet update \
+  --resource-group Ansible_res_group \
+  --vnet-name myVNet \
+  --name myBackendSubnet \
+  --network-security-group myBackendNSG
+
+# 4 allow http trafic with ptotocol Tcp on port 80
+az network nsg rule create \
+  --resource-group Ansible_res_group \
+  --nsg-name myBackendNSG \
+  --name http \
+  --access allow \
+  --protocol Tcp \
+  --direction Inbound \
+  --priority 200 \
+  --source-address-prefix "*" \
+  --source-port-range "*" \
+  --destination-address-prefix "*" \
+  --destination-port-range 80
+
+# 5 
+az network nsg rule list --resource-group Ansible_res_group --nsg-name myBackendNSG --output table
+
+#6 
+az network nsg rule create \
+  --resource-group myRGNetwork \
+  --nsg-name myBackendNSG \
+  --name SSH \
+  --access Allow \
+  --protocol Tcp \
+  --direction Inbound \
+  --priority 100 \
+  --source-address-prefix 10.0.1.0/24 \
+  --source-port-range "*" \
+  --destination-address-prefix "*" \
+  --destination-port-range "22"
+
+
+
+
+
+
+# new wm
+# ssh keys in ~/.ssh
+az vm create \
+  --resource-group Ansible_res_group \
+  --name myVM1 \
+  --image CentOS \
+  --admin-username alex \
+  --generate-ssh-keys
+
+
+
+
