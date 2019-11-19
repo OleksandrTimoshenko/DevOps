@@ -1,0 +1,2 @@
+тут 
+- створення scale set без imeges
