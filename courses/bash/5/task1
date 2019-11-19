@@ -1,0 +1,8 @@
+#!/bin/bash
+# you can run it only if you root user
+path=$( pwd )
+echo "Now i in directory ${path}"
+terminal=$TERM
+echo "It is runing for ${terminal}"
+processes=$(ls /etc/rc3.d/S*)
+echo "runing processes: ${processes}"

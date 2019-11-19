@@ -1,0 +1,21 @@
+!#/bin/bash
+. ./lib/helloworld
+. ./lib/mymkdir
+. ./lib/myls
+helloworld
+mkdir
+ls
+
+function helloworld {           
+    echo "Hello world!"
+}
+
+function mymkdir {
+        mkdir ./test_dir
+}
+
+function myls {
+        ls
+}
+
+
